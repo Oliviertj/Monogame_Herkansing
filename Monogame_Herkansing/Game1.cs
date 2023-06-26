@@ -13,11 +13,11 @@ namespace Monogame_Herkansing
       //private Texture2D _bulletTexture;
         private Texture2D _enemyTexture;
 
-        public int windowHeight;
-        public int windowWidth;
-
         private Player _player;
         private Enemy _enemy;
+
+        public int windowHeight;
+        public int windowWidth;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -59,7 +59,7 @@ namespace Monogame_Herkansing
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            _player.Update(gameTime);
+            _player.Update(gameTime, windowWidth, windowHeight);
 
             _enemy.Update(gameTime);
 
