@@ -9,8 +9,10 @@ namespace Monogame_Herkansing
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        private KeyboardState _previousKeyboardState;
+
         private Texture2D _playerTexture;
-      //private Texture2D _bulletTexture;
+        private Texture2D _bulletTexture;
         private Texture2D _enemyTexture;
 
         public int windowHeight;
@@ -18,6 +20,7 @@ namespace Monogame_Herkansing
 
         private Player _player;
         private Enemy _enemy;
+        private Bullet _bullet;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -28,13 +31,13 @@ namespace Monogame_Herkansing
             _graphics.ApplyChanges();
         }
 
-
+        private Vector2 bulletPosition;
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _playerTexture = Content.Load<Texture2D>("Rocket");
-          //  _bulletTexture = Content.Load<Texture2D>("bullet");
+            _playerTexture = Content.Load<Texture2D>("Rocket"); 
             _enemyTexture = Content.Load<Texture2D>("Ufo");
+            _bulletTexture = Content.Load<Texture2D>("Bullet");
 
             Vector2 playerPosition = new Vector2(0, windowHeight / 2);
             float playerSpeed = 7.5f;
@@ -43,6 +46,9 @@ namespace Monogame_Herkansing
             Vector2 enemyPosition = new Vector2(windowWidth, windowHeight / 2);
             float enemySpeed = 5f;
             _enemy = new Enemy(_enemyTexture, enemyPosition, enemySpeed, windowWidth, windowHeight);
+
+            float bulletSpeed = 12.5f;
+            _bullet = new Bullet(_bulletTexture, bulletPosition, bulletSpeed);
 
             base.Initialize();
         }
@@ -59,14 +65,23 @@ namespace Monogame_Herkansing
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            _player.Update(gameTime);
+            KeyboardState currentKeyboardState = Keyboard.GetState();
 
+            // Shoot bullet when spacebar is pressed
+            if (currentKeyboardState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
+            {
+               _bullet.Shoot(bulletPosition);
+            }
+
+            _player.Update(gameTime, windowWidth, windowHeight);
             _enemy.Update(gameTime);
+            _bullet.Update(gameTime);
 
-            // TODO: Add your update logic here
+            _previousKeyboardState = currentKeyboardState;
 
             base.Update(gameTime);
         }
+
 
         protected override void Draw(GameTime gameTime)
         {
@@ -77,6 +92,7 @@ namespace Monogame_Herkansing
             // Draw the player
             _player.Draw(_spriteBatch);
             _enemy.Draw(_spriteBatch);
+            _bullet.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);
