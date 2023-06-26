@@ -47,6 +47,8 @@ internal class Enemy
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(_enemyTexture, _position, Color.White);
+        float scale = 0.66f; // 50% scaling factor
+
+        spriteBatch.Draw(_enemyTexture, _position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
     }
 }
