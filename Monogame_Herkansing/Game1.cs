@@ -11,10 +11,12 @@ namespace Monogame_Herkansing
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Rectangle backgroundRectangle;
 
         private Texture2D _playerTexture;
         private Texture2D _bulletTexture;
         private Texture2D _enemyTexture;
+        private Texture2D _backgroundTexture;
 
         private Player _player;
         private Enemy _enemy;
@@ -38,6 +40,7 @@ namespace Monogame_Herkansing
             _playerTexture = Content.Load<Texture2D>("Rocket"); 
             _enemyTexture = Content.Load<Texture2D>("Ufo");
             _bulletTexture = Content.Load<Texture2D>("Bullet");
+            _backgroundTexture = Content.Load<Texture2D>("Space-Background");
 
             Vector2 playerPosition = new Vector2(0, windowHeight / 2);
             _player = new Player(_playerTexture, playerPosition, _playerSpeed);
@@ -53,6 +56,8 @@ namespace Monogame_Herkansing
 
         protected override void LoadContent()
         {
+            backgroundRectangle = new Rectangle(0, 0, windowWidth, windowHeight);
+
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
@@ -77,7 +82,7 @@ namespace Monogame_Herkansing
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
             _spriteBatch.Begin();
-
+            _spriteBatch.Draw(_backgroundTexture, backgroundRectangle, Color.White);
             // Draw the player
             _player.Draw(_spriteBatch);
             _enemy.Draw(_spriteBatch);

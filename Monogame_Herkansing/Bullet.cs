@@ -14,8 +14,8 @@ namespace Monogame_Herkansing
         private Texture2D _bulletTexture;
         private Vector2 _position;
         private float _speed;
-        private bool _isActive;
         private float _bulletTime;
+        private bool _isActive;
         private int _screenWidth;
         private KeyboardState _previousKeyboardState;
 
@@ -30,7 +30,6 @@ namespace Monogame_Herkansing
 
         public void Update(GameTime gameTime)
         {         
-            Console.WriteLine("Reached update");
 
             KeyboardState currentKeyboardState = Keyboard.GetState();
 
@@ -41,14 +40,12 @@ namespace Monogame_Herkansing
                 Shoot();
             }
 
-
             _previousKeyboardState = currentKeyboardState;
 
             if (_isActive)
             {
                 _bulletTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 _position.X += _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                playerBullets.Add(new Bullet(_bulletTexture, _position, _speed, _screenWidth));
                 // Check for collisions with bullets
                 foreach (Bullet bullet in playerBullets.ToArray())
                 {
@@ -78,6 +75,7 @@ namespace Monogame_Herkansing
         {
             _position.X = player.position.X + 100; 
             _position.Y = player.position.Y + 50;
+            playerBullets.Add(new Bullet(_bulletTexture, _position, _speed, _screenWidth));
             _isActive = true;
         }
     }
