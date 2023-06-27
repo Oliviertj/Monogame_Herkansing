@@ -9,12 +9,13 @@ namespace Monogame_Herkansing
         private Vector2 _position;
         private float _speed;
         private bool _isActive;
-
-        public Bullet(Texture2D texture, Vector2 position, float speed)
+        private int _screenWidth;
+        public Bullet(Texture2D texture, Vector2 position, float speed, int screenWidth)
         {
             _bulletTexture = texture;
             _position = position;
             _speed = speed;
+            _screenWidth = screenWidth;
             _isActive = false;
         }
 
@@ -25,7 +26,7 @@ namespace Monogame_Herkansing
                 _position.X += _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 // Deactivate bullet when it goes off-screen
-                if (_position.X > _bulletTexture.Width)
+                if (_position.X > _screenWidth)
                 {
                     _isActive = false;
                 }

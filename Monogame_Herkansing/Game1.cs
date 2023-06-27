@@ -9,8 +9,6 @@ namespace Monogame_Herkansing
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private KeyboardState _previousKeyboardState;
-
         private Texture2D _playerTexture;
         private Texture2D _bulletTexture;
         private Texture2D _enemyTexture;
@@ -30,8 +28,6 @@ namespace Monogame_Herkansing
             windowHeight = _graphics.PreferredBackBufferHeight = 900;
             _graphics.ApplyChanges();
         }
-
-        private Vector2 bulletPosition;
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -47,9 +43,7 @@ namespace Monogame_Herkansing
             float enemySpeed = 5f;
             _enemy = new Enemy(_enemyTexture, enemyPosition, enemySpeed, windowWidth, windowHeight);
 
-            float bulletSpeed = 12.5f;
-            _bullet = new Bullet(_bulletTexture, bulletPosition, bulletSpeed);
-
+            _bullet = new Bullet(_bulletTexture, playerPosition, enemySpeed, windowWidth);
             base.Initialize();
         }
 
@@ -65,19 +59,8 @@ namespace Monogame_Herkansing
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            KeyboardState currentKeyboardState = Keyboard.GetState();
-
-            // Shoot bullet when spacebar is pressed
-            if (currentKeyboardState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
-            {
-               _bullet.Shoot(bulletPosition);
-            }
-
             _player.Update(gameTime, windowWidth, windowHeight);
             _enemy.Update(gameTime);
-            _bullet.Update(gameTime);
-
-            _previousKeyboardState = currentKeyboardState;
 
             base.Update(gameTime);
         }
@@ -92,7 +75,6 @@ namespace Monogame_Herkansing
             // Draw the player
             _player.Draw(_spriteBatch);
             _enemy.Draw(_spriteBatch);
-            _bullet.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);
