@@ -15,7 +15,6 @@ namespace Monogame_Herkansing
 
         private Texture2D _playerTexture;
         private float _speed;
-        private bool isPressed;
 
         /// <summary>
         /// Constructor for Player's parameters.
