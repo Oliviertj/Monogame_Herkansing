@@ -6,6 +6,9 @@ namespace Monogame_Herkansing
 {
     public class Game1 : Game
     {
+        public int windowHeight;
+        public int windowWidth;
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
@@ -13,12 +16,13 @@ namespace Monogame_Herkansing
         private Texture2D _bulletTexture;
         private Texture2D _enemyTexture;
 
-        public int windowHeight;
-        public int windowWidth;
-
         private Player _player;
         private Enemy _enemy;
         private Bullet _bullet;
+
+        private float _enemySpeed = 8f;
+        private float _playerSpeed = 7.5f;
+        private float _bulletSpeed = 1000f;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -36,14 +40,14 @@ namespace Monogame_Herkansing
             _bulletTexture = Content.Load<Texture2D>("Bullet");
 
             Vector2 playerPosition = new Vector2(0, windowHeight / 2);
-            float playerSpeed = 7.5f;
-            _player = new Player(_playerTexture, playerPosition, playerSpeed);
+            _player = new Player(_playerTexture, playerPosition, _playerSpeed);
 
-            Vector2 enemyPosition = new Vector2(windowWidth, windowHeight / 2);
-            float enemySpeed = 5f;
-            _enemy = new Enemy(_enemyTexture, enemyPosition, enemySpeed, windowWidth, windowHeight);
+            Vector2 enemyPosition = new Vector2(windowWidth, windowHeight / 2); 
+            _enemy = new Enemy(_enemyTexture, enemyPosition, _enemySpeed, windowWidth, windowHeight);
 
-            _bullet = new Bullet(_bulletTexture, playerPosition, enemySpeed, windowWidth);
+            _bullet = new Bullet(_bulletTexture, playerPosition, _bulletSpeed, windowWidth);
+            _bullet.player = _player;
+
             base.Initialize();
         }
 
@@ -60,7 +64,9 @@ namespace Monogame_Herkansing
                 Exit();
 
             _player.Update(gameTime, windowWidth, windowHeight);
+
             _enemy.Update(gameTime);
+            _bullet.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -75,6 +81,7 @@ namespace Monogame_Herkansing
             // Draw the player
             _player.Draw(_spriteBatch);
             _enemy.Draw(_spriteBatch);
+            _bullet.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);
