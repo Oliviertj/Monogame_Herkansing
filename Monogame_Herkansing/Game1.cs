@@ -59,7 +59,11 @@ namespace Monogame_Herkansing
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+<<<<<<< Updated upstream
             _player.Update(gameTime, windowWidth, windowHeight);
+=======
+            _player.Update(gameTime, windowWidth, windowHeight );
+>>>>>>> Stashed changes
 
             _enemy.Update(gameTime);
 
