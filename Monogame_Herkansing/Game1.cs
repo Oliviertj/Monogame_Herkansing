@@ -6,22 +6,23 @@ namespace Monogame_Herkansing
 {
     public class Game1 : Game
     {
+        public int windowHeight;
+        public int windowWidth;
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
-        private Vector2 bulletPosition;
-        private Vector2 playerPosition;
 
         private Texture2D _playerTexture;
         private Texture2D _bulletTexture;
         private Texture2D _enemyTexture;
 
-        public int windowHeight;
-        public int windowWidth;
-
         private Player _player;
         private Enemy _enemy;
         private Bullet _bullet;
+
+        private float _enemySpeed = 8f;
+        private float _playerSpeed = 7.5f;
+        private float _bulletSpeed = 1000f;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -31,7 +32,6 @@ namespace Monogame_Herkansing
             windowHeight = _graphics.PreferredBackBufferHeight = 900;
             _graphics.ApplyChanges();
         }
-
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -39,13 +39,14 @@ namespace Monogame_Herkansing
             _enemyTexture = Content.Load<Texture2D>("Ufo");
             _bulletTexture = Content.Load<Texture2D>("Bullet");
 
-            playerPosition = new Vector2(0, windowHeight / 2);
-            float playerSpeed = 7.5f;
-            _player = new Player(_playerTexture, playerPosition, playerSpeed);
+            Vector2 playerPosition = new Vector2(0, windowHeight / 2);
+            _player = new Player(_playerTexture, playerPosition, _playerSpeed);
 
-            Vector2 enemyPosition = new Vector2(windowWidth, windowHeight / 2);
-            float enemySpeed = 5f;
-            _enemy = new Enemy(_enemyTexture, enemyPosition, enemySpeed, windowWidth, windowHeight);
+            Vector2 enemyPosition = new Vector2(windowWidth, windowHeight / 2); 
+            _enemy = new Enemy(_enemyTexture, enemyPosition, _enemySpeed, windowWidth, windowHeight);
+
+            _bullet = new Bullet(_bulletTexture, playerPosition, _bulletSpeed, windowWidth);
+            _bullet.player = _player;
 
             base.Initialize();
         }
@@ -59,18 +60,16 @@ namespace Monogame_Herkansing
 
         protected override void Update(GameTime gameTime)
         {
-            playerPosition = new Vector2(0, windowHeight / 2);
-             
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             _player.Update(gameTime, windowWidth, windowHeight);
+
             _enemy.Update(gameTime);
             _bullet.Update(gameTime);
 
             base.Update(gameTime);
         }
-
 
 
         protected override void Draw(GameTime gameTime)
