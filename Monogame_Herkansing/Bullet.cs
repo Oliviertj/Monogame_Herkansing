@@ -1,31 +1,35 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Monogame_Herkansing
 {
     internal class Bullet
     {
+        private KeyboardState _previousKeyboardState;
         private Texture2D _bulletTexture;
-        private Vector2 _position;
+        private Vector2 _bulletPosition;
         private float _speed;
         private bool _isActive;
+        private Vector2 _playerPosition;
 
         public Bullet(Texture2D texture, Vector2 position, float speed)
         {
             _bulletTexture = texture;
-            _position = position;
+            _bulletPosition = position;
             _speed = speed;
             _isActive = false;
         }
 
         public void Update(GameTime gameTime)
         {
+
             if (_isActive)
             {
-                _position.X += _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                _bulletPosition.X += _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 // Deactivate bullet when it goes off-screen
-                if (_position.X > _bulletTexture.Width)
+                if (_bulletPosition.X > _bulletTexture.Width)
                 {
                     _isActive = false;
                 }
@@ -36,13 +40,13 @@ namespace Monogame_Herkansing
         {
             if (_isActive)
             {
-                spriteBatch.Draw(_bulletTexture, _position, Color.White);
+                spriteBatch.Draw(_bulletTexture, _bulletPosition, Color.White);
             }
         }
 
         public void Shoot(Vector2 startPosition)
         {
-            _position = startPosition;
+            _bulletPosition = startPosition;
             _isActive = true;
         }
     }

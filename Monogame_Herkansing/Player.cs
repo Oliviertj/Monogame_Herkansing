@@ -11,6 +11,7 @@ namespace Monogame_Herkansing
 {
     internal class Player
     {
+        private KeyboardState _previousKeyboardState;
         private Texture2D _playerTexture;
         private Vector2 _position;
         private float _speed;
@@ -46,19 +47,15 @@ namespace Monogame_Herkansing
             _position.X = MathHelper.Clamp(_position.X, 0, screenWidth - 130);
             _position.Y = MathHelper.Clamp(_position.Y, 0, screenHeight - 120);
 
-            // Check if spacebar is pressed and create new bullet if it is not already pressed.
-            if (keyboardState.IsKeyDown(Keys.Space))
+            KeyboardState currentKeyboardState = Keyboard.GetState();
+
+            // Shoot bullet when spacebar is pressed
+            if (currentKeyboardState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
             {
-                if (!isPressed)
-                {
-                    _speed = _speed * 1.25f;
-                    isPressed = true;
-                }
+              
             }
-            else
-            {
-                isPressed = false;
-            }
+
+            _previousKeyboardState = currentKeyboardState;
         }
 
 
