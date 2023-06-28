@@ -2,18 +2,20 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace Monogame_Herkansing
 {
     internal class Bullet
     {
         public Player player;
+        public List<Bullet> playerBullets = new List<Bullet>();
 
         private Texture2D _bulletTexture;
         private Vector2 _position;
         private float _speed;
-        private bool _isActive;
         private float _bulletTime;
+        private bool _isActive;
         private int _screenWidth;
         private KeyboardState _previousKeyboardState;
 
@@ -23,12 +25,11 @@ namespace Monogame_Herkansing
             _position = position;
             _speed = speed;
             _screenWidth = screenWidth;
-            _isActive = false;
+            _isActive = false;          
         }
 
         public void Update(GameTime gameTime)
         {         
-            Console.WriteLine("Reached update");
 
             KeyboardState currentKeyboardState = Keyboard.GetState();
 
@@ -36,9 +37,8 @@ namespace Monogame_Herkansing
             if (currentKeyboardState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
             {
                 
-                Shoot(_position);
+                Shoot();
             }
-
 
             _previousKeyboardState = currentKeyboardState;
 
@@ -46,14 +46,16 @@ namespace Monogame_Herkansing
             {
                 _bulletTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 _position.X += _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                // Deactivate bullet when it goes off-screen
-                if (_position.X > _screenWidth - 100)
+                // Check for collisions with bullets
+                foreach (Bullet bullet in playerBullets.ToArray())
                 {
-                    if ( _bulletTime >= 1.5f)
+                    // Deactivate bullet when it goes off-screen
+                    if (_position.X > _screenWidth - 100)
                     {
-                        _bulletTime = 0;
-                        _isActive = false;
+                        if (_bulletTime >= 1.5f)
+                        {
+                           
+                        }
                     }
                 }
             }
@@ -63,15 +65,17 @@ namespace Monogame_Herkansing
         {
             if (_isActive)
             {
-                float scale = 0.40f;
+                float scale = 0.4f;
 
                 spriteBatch.Draw(_bulletTexture, _position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             }
         }
 
-        public void Shoot(Vector2 startPosition)
+        public void Shoot()
         {
-            _position = player.position;
+            _position.X = player.position.X + 100; 
+            _position.Y = player.position.Y + 50;
+            playerBullets.Add(new Bullet(_bulletTexture, _position, _speed, _screenWidth));
             _isActive = true;
         }
     }

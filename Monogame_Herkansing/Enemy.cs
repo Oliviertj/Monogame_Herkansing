@@ -40,14 +40,14 @@ internal class Enemy
                 Random rnd = new Random();
                 // Enemy reached the left screen barrier, reset its position to appear from the right side
                 _position.X = _windowWidth;
-                _position.Y = rnd.Next(1, _windowHeight);
+                _position.Y = rnd.Next(1, _windowHeight - 100);
             }
         }
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        float scale = 0.66f;
+        float scale = 0.5f;
 
         spriteBatch.Draw(_enemyTexture, _position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
     }
