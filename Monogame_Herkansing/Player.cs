@@ -45,7 +45,6 @@ namespace Monogame_Herkansing
             // Restrict player movement within the screen boundaries
             position.X = MathHelper.Clamp(position.X, 0, screenWidth - 130);
             position.Y = MathHelper.Clamp(position.Y, 0, screenHeight - 120);
-
         }
 
 
