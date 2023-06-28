@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Monogame_Herkansing
 {
@@ -30,49 +31,54 @@ namespace Monogame_Herkansing
 
         public void Update(GameTime gameTime)
         {         
-
             KeyboardState currentKeyboardState = Keyboard.GetState();
 
             // Shoot bullet when spacebar is pressed
             if (currentKeyboardState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
-            {
-                
+            {      
                 Shoot();
             }
 
             _previousKeyboardState = currentKeyboardState;
-
+  
             if (_isActive)
             {
-                _bulletTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                _position.X += _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                // Check for collisions with bullets
                 foreach (Bullet bullet in playerBullets.ToArray())
                 {
-                    // Deactivate bullet when it goes off-screen
-                    if (_position.X > _screenWidth - 100)
+                    bullet._position.X += _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    _bulletTime = (float)gameTime.ElapsedGameTime.Seconds;
+                }
+
+                // Removes bullets if at least 1 is in the list.
+                for (int i = playerBullets.Count - 1; i >= 0; i--)
+                {
+                    Bullet bullet = playerBullets[i];
+
+                    if (bullet._position.X > _screenWidth)
                     {
-                        if (_bulletTime >= 1.5f)
-                        {
-                           
-                        }
+                        playerBullets.RemoveAt(i);
+                    }
+                    if (_bulletTime >= 15f)
+                    {
+                        playerBullets.RemoveAt(i);
                     }
                 }
             }
         }
-
         public void Draw(SpriteBatch spriteBatch)
         {
             if (_isActive)
             {
                 float scale = 0.4f;
-
-                spriteBatch.Draw(_bulletTexture, _position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                foreach (Bullet bullet in playerBullets)
+                {                    
+                     spriteBatch.Draw(bullet._bulletTexture, bullet._position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                }
             }
         }
-
         public void Shoot()
         {
+            // Bullet position placed slightly different due to scaling.
             _position.X = player.position.X + 100; 
             _position.Y = player.position.Y + 50;
             playerBullets.Add(new Bullet(_bulletTexture, _position, _speed, _screenWidth));

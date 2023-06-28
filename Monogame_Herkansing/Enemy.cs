@@ -38,8 +38,8 @@ internal class Enemy
 
             if (_position.X + _enemyTexture.Width <= 0)
             {
-                Random rnd = new Random();
                 // Enemy reached the left screen barrier, reset its position to appear from the right side
+                Random rnd = new Random();
                 _position.X = _windowWidth;
                 _position.Y = rnd.Next(1, _windowHeight - 100);
             }
