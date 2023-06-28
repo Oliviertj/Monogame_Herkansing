@@ -30,7 +30,7 @@ namespace Monogame_Herkansing
             _playerTexture = texture;
             this.position = position;
             _speed = speed;
-            playerHitbox = new Rectangle((int)position.X, (int)position.Y, _playerTexture.Width / 4 , _playerTexture.Height / 7);
+            playerHitbox = new Rectangle((int)position.X, (int)position.Y, (int)(_playerTexture.Width * scale) , (int)(_playerTexture.Height * scale));
         }
         public void Update(GameTime gameTime, int screenWidth, int screenHeight)
         {
@@ -57,9 +57,9 @@ namespace Monogame_Herkansing
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_playerTexture, position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-           // Texture2D pixelTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-           // pixelTexture.SetData(new[] { Color.Red });
-           // spriteBatch.Draw(pixelTexture, _playerHitbox, Color.Red);
+            Texture2D pixelTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            pixelTexture.SetData(new[] { Color.Red });
+            spriteBatch.Draw(pixelTexture, playerHitbox, Color.Red);
         }
     }
 

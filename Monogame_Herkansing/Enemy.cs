@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Monogame_Herkansing;
+using SharpDX.Direct2D1.Effects;
 using System;
 
 internal class Enemy
@@ -12,6 +13,7 @@ internal class Enemy
     private bool _isMovingLeft;
     private int _windowWidth;
     private int _windowHeight;
+    private float scale = 0.5f;
 
     /// <summary>
     /// Constructor for the parameters needed for the Enemy logic.
@@ -28,7 +30,7 @@ internal class Enemy
         _isMovingLeft = true;
         _windowWidth = windowWidth;
         _windowHeight = windowHeight;
-        enemyHitbox = new Rectangle((int)position.X, (int)position.Y, _enemyTexture.Width / 2, _enemyTexture.Height / 3);
+        enemyHitbox = new Rectangle((int)position.X, (int)position.Y, (int)(_enemyTexture.Width * scale) , (int)(_enemyTexture.Height * scale));
     }
 
     public void Update(GameTime gameTime)
@@ -51,9 +53,10 @@ internal class Enemy
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        float scale = 0.5f;
-
         spriteBatch.Draw(_enemyTexture, _position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 
+        Texture2D pixelTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+        pixelTexture.SetData(new[] { Color.Red });
+        spriteBatch.Draw(pixelTexture, enemyHitbox, Color.Red);
     }
 }

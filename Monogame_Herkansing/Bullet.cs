@@ -20,6 +20,7 @@ namespace Monogame_Herkansing
         private bool _isActive;
         private int _screenWidth;
         private KeyboardState _previousKeyboardState;
+        private float scale = 0.4f;
 
         public Bullet(Texture2D texture, Vector2 position, float speed, int screenWidth)
         {
@@ -28,7 +29,7 @@ namespace Monogame_Herkansing
             _speed = speed;
             _screenWidth = screenWidth;
             _isActive = false;
-            bulletHitbox = new Rectangle((int)position.X, (int)position.Y, _bulletTexture.Width / 4, _bulletTexture.Height / 4);
+            bulletHitbox = new Rectangle((int)position.X, (int)position.Y,(int)(_bulletTexture.Width * scale), (int)(_bulletTexture.Height * scale));
         }
 
         public void Update(GameTime gameTime)
@@ -58,15 +59,14 @@ namespace Monogame_Herkansing
                 for (int i = playerBullets.Count - 1; i >= 0; i--)
                 {
                     Bullet bullet = playerBullets[i];
-
-                    if (bullet._position.X > _screenWidth)
-                    {
-                        playerBullets.RemoveAt(i);
-                    }
-                    if (_bulletTime >= 15f)
-                    {
-                        playerBullets.RemoveAt(i);
-                    }
+                        if (bullet._position.X > _screenWidth)
+                        {
+                            playerBullets.RemoveAt(i);
+                        }
+                        if (_bulletTime >= 15f)
+                        {
+                            playerBullets.RemoveAt(i);
+                        }
                 }
             }
         }
@@ -74,14 +74,13 @@ namespace Monogame_Herkansing
         {
             if (_isActive)
             {
-                float scale = 0.4f;
                 foreach (Bullet bullet in playerBullets)
                 {                    
                      spriteBatch.Draw(bullet._bulletTexture, bullet._position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 
-                  //  Texture2D pixelTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-                  //  pixelTexture.SetData(new[] { Color.Red });
-                  //  spriteBatch.Draw(pixelTexture, bulletHitbox, Color.Red);
+                    Texture2D pixelTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+                    pixelTexture.SetData(new[] { Color.Red });
+                    spriteBatch.Draw(pixelTexture, bulletHitbox, Color.Red);
                 }
             }
         }

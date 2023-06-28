@@ -58,8 +58,6 @@ namespace Monogame_Herkansing
         {
             backgroundRectangle = new Rectangle(0, 0, windowWidth, windowHeight);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -81,7 +79,6 @@ namespace Monogame_Herkansing
 
             _spriteBatch.Begin();
             _spriteBatch.Draw(_backgroundTexture, backgroundRectangle, Color.White);
-            // Draw the player
             _player.Draw(_spriteBatch);
             _enemy.Draw(_spriteBatch);
             _bullet.Draw(_spriteBatch);
