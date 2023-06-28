@@ -12,6 +12,7 @@ namespace Monogame_Herkansing
         public Player player;
         public List<Bullet> playerBullets = new List<Bullet>();
 
+        private Rectangle bulletHitbox;
         private Texture2D _bulletTexture;
         private Vector2 _position;
         private float _speed;
@@ -26,7 +27,8 @@ namespace Monogame_Herkansing
             _position = position;
             _speed = speed;
             _screenWidth = screenWidth;
-            _isActive = false;          
+            _isActive = false;
+            bulletHitbox = new Rectangle((int)position.X, (int)position.Y, _bulletTexture.Width / 4, _bulletTexture.Height / 4);
         }
 
         public void Update(GameTime gameTime)
@@ -43,10 +45,13 @@ namespace Monogame_Herkansing
   
             if (_isActive)
             {
+
                 foreach (Bullet bullet in playerBullets.ToArray())
                 {
                     bullet._position.X += _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     _bulletTime = (float)gameTime.ElapsedGameTime.Seconds;
+                    bulletHitbox.X = (int)bullet._position.X;
+                    bulletHitbox.Y = (int)bullet._position.Y;
                 }
 
                 // Removes bullets if at least 1 is in the list.
@@ -73,12 +78,16 @@ namespace Monogame_Herkansing
                 foreach (Bullet bullet in playerBullets)
                 {                    
                      spriteBatch.Draw(bullet._bulletTexture, bullet._position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+
+                  //  Texture2D pixelTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+                  //  pixelTexture.SetData(new[] { Color.Red });
+                  //  spriteBatch.Draw(pixelTexture, bulletHitbox, Color.Red);
                 }
             }
         }
         public void Shoot()
         {
-            // Bullet position placed slightly different due to scaling.
+            // Bullet position placed slaightly different due to scaling.
             _position.X = player.position.X + 100; 
             _position.Y = player.position.Y + 50;
             playerBullets.Add(new Bullet(_bulletTexture, _position, _speed, _screenWidth));

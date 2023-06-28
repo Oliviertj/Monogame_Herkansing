@@ -7,6 +7,7 @@ internal class Enemy
 {
     private Texture2D _enemyTexture;
     private Vector2 _position;
+    private Rectangle enemyHitbox;
     private float _speed;
     private bool _isMovingLeft;
     private int _windowWidth;
@@ -27,6 +28,7 @@ internal class Enemy
         _isMovingLeft = true;
         _windowWidth = windowWidth;
         _windowHeight = windowHeight;
+        enemyHitbox = new Rectangle((int)position.X, (int)position.Y, _enemyTexture.Width / 2, _enemyTexture.Height / 3);
     }
 
     public void Update(GameTime gameTime)
@@ -43,6 +45,8 @@ internal class Enemy
                 _position.Y = rnd.Next(1, _windowHeight - 100);
             }
         }
+        enemyHitbox.X = (int)_position.X;
+        enemyHitbox.Y = (int)_position.Y;
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -50,5 +54,6 @@ internal class Enemy
         float scale = 0.5f;
 
         spriteBatch.Draw(_enemyTexture, _position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+
     }
 }

@@ -13,8 +13,11 @@ namespace Monogame_Herkansing
     {
         public Vector2 position;
 
+        private Rectangle playerHitbox;
         private Texture2D _playerTexture;
         private float _speed;
+        private float scale = 0.33f; // 50% scaling factor
+
 
         /// <summary>
         /// Constructor for Player's parameters.
@@ -27,6 +30,7 @@ namespace Monogame_Herkansing
             _playerTexture = texture;
             this.position = position;
             _speed = speed;
+            playerHitbox = new Rectangle((int)position.X, (int)position.Y, _playerTexture.Width / 4 , _playerTexture.Height / 7);
         }
         public void Update(GameTime gameTime, int screenWidth, int screenHeight)
         {
@@ -45,14 +49,17 @@ namespace Monogame_Herkansing
             // Restrict player movement within the screen boundaries
             position.X = MathHelper.Clamp(position.X, 0, screenWidth - 130);
             position.Y = MathHelper.Clamp(position.Y, 0, screenHeight - 120);
+            playerHitbox.X = (int)position.X;
+            playerHitbox.Y = (int)position.Y;
         }
 
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            float scale = 0.33f; // 50% scaling factor
-
             spriteBatch.Draw(_playerTexture, position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+           // Texture2D pixelTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+           // pixelTexture.SetData(new[] { Color.Red });
+           // spriteBatch.Draw(pixelTexture, _playerHitbox, Color.Red);
         }
     }
 
