@@ -31,13 +31,11 @@ namespace Monogame_Herkansing
 
         public void Update(GameTime gameTime)
         {         
-
             KeyboardState currentKeyboardState = Keyboard.GetState();
 
             // Shoot bullet when spacebar is pressed
             if (currentKeyboardState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
-            {
-                
+            {      
                 Shoot();
             }
 
@@ -56,7 +54,7 @@ namespace Monogame_Herkansing
                 {
                     Bullet bullet = playerBullets[i];
 
-                    if (bullet._position.X > _screenWidth - 150)
+                    if (bullet._position.X > _screenWidth)
                     {
                         playerBullets.RemoveAt(i);
                     }
@@ -67,7 +65,6 @@ namespace Monogame_Herkansing
                 }
             }
         }
-
         public void Draw(SpriteBatch spriteBatch)
         {
             if (_isActive)
@@ -79,9 +76,9 @@ namespace Monogame_Herkansing
                 }
             }
         }
-
         public void Shoot()
         {
+            // Bullet position placed slightly different due to scaling.
             _position.X = player.position.X + 100; 
             _position.Y = player.position.Y + 50;
             playerBullets.Add(new Bullet(_bulletTexture, _position, _speed, _screenWidth));
