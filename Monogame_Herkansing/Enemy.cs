@@ -22,6 +22,7 @@ internal class Enemy
     /// <param name="position">Contains the starting position for the Enemy. </param>
     /// <param name="speed">Contains the enemy speed. </param>
     /// <param name="windowWidth">Windowwidth used for the screenwidth.</param>
+    /// <param name="windowHeight">Windowheight used for the screenheight.</param>
     public Enemy(Texture2D texture, Vector2 position, float speed, int windowWidth, int windowHeight)
     {
         _enemyTexture = texture;

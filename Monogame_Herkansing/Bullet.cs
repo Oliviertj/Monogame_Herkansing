@@ -22,6 +22,13 @@ namespace Monogame_Herkansing
         private KeyboardState _previousKeyboardState;
         private float scale = 0.4f;
 
+        /// <summary>
+        /// Constructor with parameters used to create the bullet.
+        /// </summary>
+        /// <param name="texture">Contains the bullet texture.</param>
+        /// <param name="position">Contains the player start position.</param>
+        /// <param name="speed">Contains the bullet travel speed.</param>
+        /// <param name="screenWidth">contains the screenwidth.</param>
         public Bullet(Texture2D texture, Vector2 position, float speed, int screenWidth)
         {
             _bulletTexture = texture;
