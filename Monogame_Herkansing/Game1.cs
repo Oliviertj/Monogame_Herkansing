@@ -57,7 +57,6 @@ namespace Monogame_Herkansing
         protected override void LoadContent()
         {
             backgroundRectangle = new Rectangle(0, 0, windowWidth, windowHeight);
-
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
@@ -69,7 +68,6 @@ namespace Monogame_Herkansing
                 Exit();
 
             _player.Update(gameTime, windowWidth, windowHeight);
-
             _enemy.Update(gameTime);
             _bullet.Update(gameTime);
 
