@@ -95,7 +95,7 @@ namespace Monogame_Herkansing
         {
             // Bullet position placed slaightly different due to scaling.
             _position.X = player.position.X + 100; 
-            _position.Y = player.position.Y + 50;
+            _position.Y = player.position.Y;
             playerBullets.Add(new Bullet(_bulletTexture, _position, _speed, _screenWidth));
             _isActive = true;
         }
