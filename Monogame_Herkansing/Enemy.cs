@@ -4,11 +4,12 @@ using Monogame_Herkansing;
 using SharpDX.Direct2D1.Effects;
 using System;
 
-internal class Enemy
+public class Enemy
 {
+    private Game1 _game;
     private Texture2D _enemyTexture;
     private Vector2 _position;
-    private Rectangle enemyHitbox;
+    public Rectangle enemyHitbox;
     private float _speed;
     private bool _isMovingLeft;
     private int _windowWidth;
@@ -23,7 +24,7 @@ internal class Enemy
     /// <param name="speed">Contains the enemy speed. </param>
     /// <param name="windowWidth">Windowwidth used for the screenwidth.</param>
     /// <param name="windowHeight">Windowheight used for the screenheight.</param>
-    public Enemy(Texture2D texture, Vector2 position, float speed, int windowWidth, int windowHeight)
+    public Enemy(Texture2D texture, Vector2 position, float speed, int windowWidth, int windowHeight, Game1 game)
     {
         _enemyTexture = texture;
         _position = position;
@@ -32,10 +33,12 @@ internal class Enemy
         _windowWidth = windowWidth;
         _windowHeight = windowHeight;
         enemyHitbox = new Rectangle((int)position.X, (int)position.Y, (int)(_enemyTexture.Width * scale) , (int)(_enemyTexture.Height * scale));
+        _game = game;
     }
 
     public void Update(GameTime gameTime)
     {
+       // _game.DeactivateEnemyTexture(_enemyTexture);
         if (_isMovingLeft)
         {
             _position.X -= _speed;

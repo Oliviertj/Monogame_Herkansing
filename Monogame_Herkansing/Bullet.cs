@@ -7,11 +7,12 @@ using System.Diagnostics;
 
 namespace Monogame_Herkansing
 {
-    internal class Bullet
+    public class Bullet
     {
         public Player player;
         public List<Bullet> playerBullets = new List<Bullet>();
-
+        private Game1 _game;
+        private Enemy _enemy;
         private Rectangle bulletHitbox;
         private Texture2D _bulletTexture;
         private Vector2 _position;
@@ -29,54 +30,64 @@ namespace Monogame_Herkansing
         /// <param name="position">Contains the player start position.</param>
         /// <param name="speed">Contains the bullet travel speed.</param>
         /// <param name="screenWidth">contains the screenwidth.</param>
-        public Bullet(Texture2D texture, Vector2 position, float speed, int screenWidth)
+        public Bullet(Texture2D texture, Vector2 position, float speed, int screenWidth, Enemy enemy, Game1 game)
         {
             _bulletTexture = texture;
             _position = position;
             _speed = speed;
             _screenWidth = screenWidth;
             _isActive = false;
-            bulletHitbox = new Rectangle((int)position.X, (int)position.Y,(int)(_bulletTexture.Width * scale), (int)(_bulletTexture.Height * scale));
+            bulletHitbox = new Rectangle((int)position.X, (int)position.Y, (int)(_bulletTexture.Width * scale), (int)(_bulletTexture.Height * scale));
+            _enemy = enemy;
+            _game = game;
         }
 
         public void Update(GameTime gameTime)
-        {         
+        {
             KeyboardState currentKeyboardState = Keyboard.GetState();
 
             // Shoot bullet when spacebar is pressed
             if (currentKeyboardState.IsKeyDown(Keys.Space) && _previousKeyboardState.IsKeyUp(Keys.Space))
-            {      
+            {
                 Shoot();
             }
 
             _previousKeyboardState = currentKeyboardState;
-  
+
             if (_isActive)
             {
-
                 foreach (Bullet bullet in playerBullets.ToArray())
                 {
                     bullet._position.X += _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     _bulletTime = (float)gameTime.ElapsedGameTime.Seconds;
                     bulletHitbox.X = (int)bullet._position.X;
                     bulletHitbox.Y = (int)bullet._position.Y;
+
+                    // Check for collision with enemy
+                    if (bulletHitbox.Intersects(_enemy.enemyHitbox))
+                    {
+                        _game.DestroyBullet(bullet);
+                        _game.DeactivateEnemyHitBox(_enemy);
+                        break; 
+                    }
                 }
 
                 // Removes bullets if at least 1 is in the list.
                 for (int i = playerBullets.Count - 1; i >= 0; i--)
                 {
                     Bullet bullet = playerBullets[i];
-                        if (bullet._position.X > _screenWidth)
-                        {
-                            playerBullets.RemoveAt(i);
-                        }
-                        if (_bulletTime >= 15f)
-                        {
-                            playerBullets.RemoveAt(i);
-                        }
+                    if (bullet._position.X > _screenWidth)
+                    {
+                        playerBullets.RemoveAt(i);
+                    }
+                    if (_bulletTime >= 15f)
+                    {
+                        playerBullets.RemoveAt(i);
+                    }
                 }
             }
         }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             if (_isActive)
@@ -96,7 +107,7 @@ namespace Monogame_Herkansing
             // Bullet position placed slaightly different due to scaling.
             _position.X = player.position.X + 100; 
             _position.Y = player.position.Y;
-            playerBullets.Add(new Bullet(_bulletTexture, _position, _speed, _screenWidth));
+            playerBullets.Add(new Bullet(_bulletTexture, _position, _speed, _screenWidth, _enemy, _game));
             _isActive = true;
         }
     }

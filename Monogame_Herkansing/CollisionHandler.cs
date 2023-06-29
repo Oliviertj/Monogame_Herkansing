@@ -1,23 +1,23 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
 
 namespace Monogame_Herkansing
 {
     internal class CollisionHandler
     {
-        /*
         internal Rectangle _enemyHitbox;
 
-        // returns true if triggered.
-        public static bool CheckCollision(Rectangle checkHitBox)
+        private Rectangle _player;
+        private Rectangle _enemy;
+        private Rectangle _bullet;
+
+        public void update(GameTime gametime)
         {
-            return checkHitBox.IntersectsWith(_enemyHitbox);
+            if(_bullet.Intersects(_player))
+            {
+                
+            }
         }
-        */
+
     }
+
 }

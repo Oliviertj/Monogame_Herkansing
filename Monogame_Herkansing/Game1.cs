@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+
 namespace Monogame_Herkansing
 {
     public class Game1 : Game
@@ -25,6 +26,7 @@ namespace Monogame_Herkansing
         private float _enemySpeed = 8f;
         private float _playerSpeed = 7.5f;
         private float _bulletSpeed = 1000f;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -43,12 +45,12 @@ namespace Monogame_Herkansing
             _backgroundTexture = Content.Load<Texture2D>("Space-Background");
 
             Vector2 playerPosition = new Vector2(0, windowHeight / 2);
-            _player = new Player(_playerTexture, playerPosition, _playerSpeed);
+            _player = new Player(_playerTexture, playerPosition, _playerSpeed, this);
 
             Vector2 enemyPosition = new Vector2(windowWidth, windowHeight / 2); 
-            _enemy = new Enemy(_enemyTexture, enemyPosition, _enemySpeed, windowWidth, windowHeight);
+            _enemy = new Enemy(_enemyTexture, enemyPosition, _enemySpeed, windowWidth, windowHeight, this);
 
-            _bullet = new Bullet(_bulletTexture, playerPosition, _bulletSpeed, windowWidth);
+            _bullet = new Bullet(_bulletTexture, playerPosition, _bulletSpeed, windowWidth, _enemy, this);
             _bullet.player = _player;
 
             base.Initialize();
@@ -59,6 +61,19 @@ namespace Monogame_Herkansing
             backgroundRectangle = new Rectangle(0, 0, windowWidth, windowHeight);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
         }
+        public void DestroyBullet(Bullet bullet)
+        {
+            _bullet.playerBullets.Remove(bullet);
+        }
+        public void DeactivateEnemyHitBox(Enemy enemyHitbox)
+        {
+            enemyHitbox.enemyHitbox = new Rectangle(0, 0, 0, 0);
+        }
+        public void ActivateEnemyHitBox(Enemy enemyHitbox)
+        {
+            enemyHitbox.enemyHitbox = new Rectangle(0, 0, 0, 0);
+        }
+
 
         protected override void Update(GameTime gameTime)
         {

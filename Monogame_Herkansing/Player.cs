@@ -9,10 +9,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Monogame_Herkansing
 {
-    internal class Player
+    public class Player
     {
         public Vector2 position;
-
+        private Game1 _game;
         private Rectangle playerHitbox;
         private Texture2D _playerTexture;
         private float _speed;
@@ -25,12 +25,13 @@ namespace Monogame_Herkansing
         /// <param name="texture">Contains the player texture.</param>
         /// <param name="position">Contains the starting position for the Player.</param>
         /// <param name="speed">Contains the player speed.</param>
-        public Player(Texture2D texture, Vector2 position, float speed)
+        public Player(Texture2D texture, Vector2 position, float speed, Game1 game)
         {
             _playerTexture = texture;
             this.position = position;
             _speed = speed;
             playerHitbox = new Rectangle((int)position.X, (int)position.Y, (int)(_playerTexture.Width * scale) , (int)(_playerTexture.Height * scale));
+            _game = game;
         }
         public void Update(GameTime gameTime, int screenWidth, int screenHeight)
         {
