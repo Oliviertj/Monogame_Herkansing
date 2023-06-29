@@ -53,6 +53,9 @@ namespace Monogame_Herkansing
             float scale = 0.33f; // 50% scaling factor
 
             spriteBatch.Draw(_playerTexture, position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+           // Texture2D pixelTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+           // pixelTexture.SetData(new[] { Color.Red });
+           // spriteBatch.Draw(pixelTexture, playerHitbox, Color.Red);
         }
     }
 

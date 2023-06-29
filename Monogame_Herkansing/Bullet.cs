@@ -26,7 +26,8 @@ namespace Monogame_Herkansing
             _position = position;
             _speed = speed;
             _screenWidth = screenWidth;
-            _isActive = false;          
+            _isActive = false;
+            bulletHitbox = new Rectangle((int)_position.X, (int)position.Y,(int)(_bulletTexture.Width * scale), (int)(_bulletTexture.Height * scale));
         }
 
         public void Update(GameTime gameTime)
@@ -80,7 +81,7 @@ namespace Monogame_Herkansing
         {
             // Bullet position placed slightly different due to scaling.
             _position.X = player.position.X + 100; 
-            _position.Y = player.position.Y + 50;
+            _position.Y = player.position.Y;
             playerBullets.Add(new Bullet(_bulletTexture, _position, _speed, _screenWidth));
             _isActive = true;
         }

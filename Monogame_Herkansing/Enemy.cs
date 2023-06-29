@@ -50,5 +50,9 @@ internal class Enemy
         float scale = 0.5f;
 
         spriteBatch.Draw(_enemyTexture, _position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+
+      //  Texture2D pixelTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+      //  pixelTexture.SetData(new[] { Color.Red });
+      //  spriteBatch.Draw(pixelTexture, enemyHitbox, Color.Red);
     }
 }
