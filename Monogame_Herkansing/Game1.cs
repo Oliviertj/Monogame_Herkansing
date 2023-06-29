@@ -1,7 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using SharpDX.Direct2D1.Effects;
+using System;
 
 namespace Monogame_Herkansing
 {
@@ -65,15 +66,19 @@ namespace Monogame_Herkansing
         {
             _bullet.playerBullets.Remove(bullet);
         }
-        public void DeactivateEnemyHitBox(Enemy enemyHitbox)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="enemyHitbox"></param>
+        /// <param name="rectangle">Rectangle can disable or enable.</param>
+        public void DeactivateEnemy(Enemy enemy, Rectangle rectangle)
         {
-            enemyHitbox.enemyHitbox = new Rectangle(0, 0, 0, 0);
+            enemy.enemyHitbox = new Rectangle(0, 0, 0, 0);
         }
-        public void ActivateEnemyHitBox(Enemy enemyHitbox)
+        public void ActivateEnemy(Rectangle enemyRectangle, float scale)
         {
-            enemyHitbox.enemyHitbox = new Rectangle(0, 0, 0, 0);
+            enemyRectangle = new Rectangle(enemyRectangle.X, enemyRectangle.Y, (int)(_playerTexture.Width * scale), (int)(_playerTexture.Height * scale));
         }
-
 
         protected override void Update(GameTime gameTime)
         {

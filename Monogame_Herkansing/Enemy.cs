@@ -49,6 +49,8 @@ public class Enemy
                 Random rnd = new Random();
                 _position.X = _windowWidth;
                 _position.Y = rnd.Next(1, _windowHeight - 100);
+                _game.ActivateEnemy(enemyHitbox, scale);
+                
             }
         }
         enemyHitbox.X = (int)_position.X;

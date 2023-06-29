@@ -67,7 +67,8 @@ namespace Monogame_Herkansing
                     if (bulletHitbox.Intersects(_enemy.enemyHitbox))
                     {
                         _game.DestroyBullet(bullet);
-                        _game.DeactivateEnemyHitBox(_enemy);
+
+                        _game.DeactivateEnemy(_enemy, new Rectangle(0,0,0,0));
                         break; 
                     }
                 }
