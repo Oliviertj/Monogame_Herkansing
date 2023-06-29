@@ -49,6 +49,13 @@
 /processorParam:TextureFormat=Color
 /build:space-background.png
 
+#begin textfont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:textfont.spritefont
+
 #begin ufo.png
 /importer:TextureImporter
 /processor:TextureProcessor
