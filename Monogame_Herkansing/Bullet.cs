@@ -22,9 +22,10 @@ namespace Monogame_Herkansing
         private int _screenWidth;
         private KeyboardState _previousKeyboardState;
         private float scale = 0.4f;
+        private bool _isActive = false;
         public Rectangle bulletRect;
-                    
 
+ 
         /// <summary>
         /// Constructor with parameters used to create the bullet.
         /// </summary>
@@ -37,7 +38,8 @@ namespace Monogame_Herkansing
             _bulletTexture = texture;
             _position = position;
             _speed = speed;
-            _screenWidth = screenWidth;  
+            _screenWidth = screenWidth;
+            bulletHitbox = new Rectangle((int)position.X, (int)position.Y, (int)(_bulletTexture.Width * scale), (int)(_bulletTexture.Height * scale));
         }
 
         public void Update(GameTime gameTime, CollisionHandler cHandler, Enemy enemy)
@@ -55,14 +57,10 @@ namespace Monogame_Herkansing
 
             foreach (Bullet bullet in playerBullets)
             {
-                Rectangle bulletRect = new Rectangle((int)bullet._position.X, (int)bullet._position.Y, (int)(_bulletTexture.Width * scale), (int)(_bulletTexture.Height * scale));
                 bullet._position.X += _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                bulletRect.X = (int)bullet._position.X;
                 _bulletTime = (float)gameTime.ElapsedGameTime.Seconds;
-                Console.WriteLine(bulletRect.X);
-                // Use the updated bulletRect here as needed.
-                bulletRect.X = (int)(bullet._position.X + (_speed * (float)gameTime.ElapsedGameTime.TotalSeconds));
-                
+                bulletHitbox.X = (int)bullet._position.X;
+                bulletHitbox.Y = (int)bullet._position.Y;
             }
 
 
