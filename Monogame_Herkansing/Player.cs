@@ -13,7 +13,7 @@ namespace Monogame_Herkansing
     {
         public Vector2 position;
 
-        public Rectangle playerHitbox;
+        private Rectangle playerHitbox;
         private Texture2D _playerTexture;
         private float _speed;
         private float scale = 0.33f; // 50% scaling factor
@@ -33,8 +33,9 @@ namespace Monogame_Herkansing
             playerHitbox = new Rectangle((int)position.X, (int)position.Y, (int)(_playerTexture.Width * scale) , (int)(_playerTexture.Height * scale));
         }
         public void Update(GameTime gameTime, int screenWidth, int screenHeight)
-        {          
+        {
             KeyboardState keyboardState = Keyboard.GetState();
+
             // Update player movement based on keyboard input
             if (keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Up))
                 position.Y -= _speed;
@@ -47,7 +48,7 @@ namespace Monogame_Herkansing
 
             // Restrict player movement within the screen boundaries
             position.X = MathHelper.Clamp(position.X, 0, screenWidth - 130);
-            position.Y = MathHelper.Clamp(position.Y, 0, screenHeight - 65);
+            position.Y = MathHelper.Clamp(position.Y, 0, screenHeight - 120);
             playerHitbox.X = (int)position.X;
             playerHitbox.Y = (int)position.Y;
         }

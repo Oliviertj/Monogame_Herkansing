@@ -1,39 +1,23 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Monogame_Herkansing
 {
     internal class CollisionHandler
     {
-        public bool CollisionCheck(Bullet bullet, Player player, Enemy enemy)
-        {
-            if (enemy.enemyHitbox.Intersects(bullet.bulletHitbox))
-            {
-                enemy.SpawnEnemy();
-                if (bullet.i >= 0 && bullet.i < bullet.playerBullets.Count)
-                {
-                    bullet.playerBullets.RemoveAt(bullet.i);
-                }
-                return true;
-            }
-            return false;
-        }
+        /*
+        internal Rectangle _enemyHitbox;
 
-        public void RemoveAt(int i, List<Bullet> toRemove)
+        // returns true if triggered.
+        public static bool CheckCollision(Rectangle checkHitBox)
         {
-            if (i >= 0 && i < toRemove.Count)
-            {
-                toRemove.RemoveAt(i);
-            }
+            return checkHitBox.IntersectsWith(_enemyHitbox);
         }
-
-        public void PlayerCollisionCheck(Player player, Enemy enemy)
-        {
-            if (enemy.enemyHitbox.Intersects(player.playerHitbox))
-            {
-                Application.Exit();
-            }
-        }
+        */
     }
 }

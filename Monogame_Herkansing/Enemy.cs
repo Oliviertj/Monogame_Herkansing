@@ -7,12 +7,12 @@ using System;
 internal class Enemy
 {
     private Texture2D _enemyTexture;
-    public Vector2 _position;
-    public Rectangle enemyHitbox;
+    private Vector2 _position;
+    private Rectangle enemyHitbox;
     private float _speed;
     private bool _isMovingLeft;
     private int _windowWidth;
-    public int _windowHeight;
+    private int _windowHeight;
     private float scale = 0.5f;
 
     /// <summary>
@@ -43,18 +43,13 @@ internal class Enemy
             if (_position.X + _enemyTexture.Width <= 0)
             {
                 // Enemy reached the left screen barrier, reset its position to appear from the right side
-                SpawnEnemy();
+                Random rnd = new Random();
+                _position.X = _windowWidth;
+                _position.Y = rnd.Next(1, _windowHeight - 100);
             }
         }
         enemyHitbox.X = (int)_position.X;
         enemyHitbox.Y = (int)_position.Y;
-    }
-
-    public void SpawnEnemy()
-    {
-        Random rnd = new Random();
-        _position.X = _windowWidth;
-        _position.Y = rnd.Next(1, _windowHeight - 100);
     }
 
     public void Draw(SpriteBatch spriteBatch)
