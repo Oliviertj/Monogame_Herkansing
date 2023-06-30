@@ -28,12 +28,13 @@ namespace Monogame_Herkansing
             }
         }
 
-        public void PlayerCollisionCheck(Player player, Enemy enemy)
+        public bool PlayerCollisionCheck(Player player, Enemy enemy)
         {
             if (enemy.enemyHitbox.Intersects(player.playerHitbox))
             {
-                Application.Exit();
+                return true;
             }
+            return false;
         }
     }
 }

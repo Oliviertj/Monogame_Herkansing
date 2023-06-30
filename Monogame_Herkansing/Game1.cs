@@ -31,6 +31,7 @@ namespace Monogame_Herkansing
 
         private bool win = false;
         private bool isPaused = true;
+        private bool youLost = false;
 
         private Vector2 _BulletsShotPos = new Vector2(75, 100);
         private Vector2 _EnemiesShotPos = new Vector2(75, 125);
@@ -40,6 +41,7 @@ namespace Monogame_Herkansing
         private string _displayEnemiesShot;
         private string _displayIntroductionText;
         private string _displayWinText;
+        private string _displayLoseText;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -79,21 +81,26 @@ namespace Monogame_Herkansing
 
         protected override void Update(GameTime gameTime)
         {
-            if (!isPaused)
+            if (youLost == false)
             {
-                _player.Update(gameTime, windowWidth, windowHeight);
-                _enemy.Update(gameTime);
-                _bullet.Update(gameTime, CollisionHandler, _enemy);
-                CollisionHandler.CollisionCheck(_bullet, _player, _enemy);
+                if (!isPaused)
+                {
+                    _player.Update(gameTime, windowWidth, windowHeight);
+                    _enemy.Update(gameTime);
+                    _bullet.Update(gameTime, CollisionHandler, _enemy);
+                    CollisionHandler.CollisionCheck(_bullet, _player, _enemy);
+                }
+                else
+                {
+                    UnPauseCheck();
+                }
+                DisplayText();
+                WinScreen();
+                YouLost();
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+                base.Update(gameTime);
+
             }
-            else
-            { 
-                UnPauseCheck();
-            }
-            DisplayText();
-            WinScreen();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
-            base.Update(gameTime);
         }
 
         private void UnPauseCheck()
@@ -116,15 +123,27 @@ namespace Monogame_Herkansing
         {     
             _displayWinText = " You Won, Thank you for playing. this is still a beta version of the game but i hope you enjoyed it!";
         }
+        private void DisplayLoseText()
+        {
+            _displayLoseText = "You lost :c Don't let the enemy hit you next time!";
+        }
         
         public void WinScreen()
         {
             if (_enemy.enemiesHit >= 10)
             {
-                win = true;
-   
                 DisplayWinText();
             }
+        }
+        private void YouLost()
+        {
+           if (CollisionHandler.PlayerCollisionCheck(_player, _enemy))
+           {
+                _backgroundTexture.Dispose();
+                GraphicsDevice.Clear(Color.Black);
+                DisplayLoseText();
+                youLost = true;
+           }
         }
 
         private void DisplayText()
@@ -148,6 +167,10 @@ namespace Monogame_Herkansing
             {
                 _spriteBatch.DrawString(_font, _displayWinText, new Vector2(500, 500), Color.Red);
             }
+            else if (youLost == true)
+            {
+                _spriteBatch.DrawString(_font, _displayLoseText, new Vector2(500, 500), Color.White);
+            }
         }
 
         protected override void Draw(GameTime gameTime)
@@ -156,9 +179,12 @@ namespace Monogame_Herkansing
 
             _spriteBatch.Begin();
             DrawDisplay(_spriteBatch);
-            _player.Draw(_spriteBatch);
-            _enemy.Draw(_spriteBatch);
-            _bullet.Draw(_spriteBatch);
+            if (youLost == false)
+            {
+                _player.Draw(_spriteBatch);
+                _enemy.Draw(_spriteBatch);
+                _bullet.Draw(_spriteBatch);
+            }
             _spriteBatch.End();
 
             base.Draw(gameTime);
