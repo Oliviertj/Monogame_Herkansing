@@ -29,6 +29,7 @@ namespace Monogame_Herkansing
         private float _playerSpeed = 7.5f;
         private float _bulletSpeed = 1000f;
 
+        private bool win = false;
         private bool isPaused = true;
 
         private Vector2 _BulletsShotPos = new Vector2(75, 100);
@@ -38,6 +39,7 @@ namespace Monogame_Herkansing
         private string _displayBulletsShot;
         private string _displayEnemiesShot;
         private string _displayIntroductionText;
+        private string _displayWinText;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -109,12 +111,24 @@ namespace Monogame_Herkansing
             _displayIntroductionText = "Welcome, This is a basic UFO shooter game \nThe controls are as following: W A S D / ArrowKeys \nTo shoot use Spacebar and to start playing use Enter \nTo win just Shoot the enemy 10 times";
 
         }
+        private void DisplayWinText()
+        {     
+            _displayWinText = " You Won, Thank you for playing. this is still a beta version of the game but i hope you enjoyed it!";
+        }
+        
+        public void WinScreen()
+        {
+            if (_enemy.enemiesHit >= 10)
+            {
+                win = true;
+                DisplayWinText();
+            }
+        }
 
         private void DisplayText()
         {
-            _displayBulletsShot = "Bullets Shot: " + _bullet.bulletsFired.ToString();
-            _displayEnemiesShot = "Enemies Shot: " + _enemy.enemiesHit.ToString();
-
+                _displayBulletsShot = "Bullets Shot: " + _bullet.bulletsFired.ToString();
+                _displayEnemiesShot = "Enemies Shot: " + _enemy.enemiesHit.ToString();
         }
         private void DrawDisplay(SpriteBatch _spriteBatch)
         {
@@ -127,6 +141,10 @@ namespace Monogame_Herkansing
             else
             {
                 _spriteBatch.DrawString(_font, _displayIntroductionText, new Vector2(windowWidth / 3, 100) , Color.White);
+            }
+            if (win == true)
+            {
+                _spriteBatch.DrawString(_font, _displayWinText, new Vector2(500, 500), Color.Red);
             }
         }
 
