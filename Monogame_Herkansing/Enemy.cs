@@ -6,13 +6,14 @@ using System;
 
 internal class Enemy
 {
-    private Texture2D _enemyTexture;
+    public int enemiesHit;
     public Vector2 _position;
     public Rectangle enemyHitbox;
-    private float _speed;
-    private bool _isMovingLeft;
-    private int _windowWidth;
     public int _windowHeight;
+    private int _windowWidth;
+    private float _speed;
+    private bool _isMovingLeft;  
+    private Texture2D _enemyTexture;
     private float scale = 0.5f;
 
     /// <summary>
@@ -52,17 +53,14 @@ internal class Enemy
 
     public void SpawnEnemy()
     {
+        enemiesHit++;
         Random rnd = new Random();
         _position.X = _windowWidth;
-        _position.Y = rnd.Next(1, _windowHeight - 100);
+        _position.Y = rnd.Next(1, _windowHeight - 100);     
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(_enemyTexture, _position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-
-        Texture2D pixelTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-        pixelTexture.SetData(new[] { Color.Red });
-        spriteBatch.Draw(pixelTexture, enemyHitbox, Color.Red);
     }
 }

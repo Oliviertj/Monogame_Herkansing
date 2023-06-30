@@ -29,12 +29,15 @@ namespace Monogame_Herkansing
         private float _playerSpeed = 7.5f;
         private float _bulletSpeed = 1000f;
 
+        private bool isPaused = true;
+
         private Vector2 _BulletsShotPos = new Vector2(75, 100);
         private Vector2 _EnemiesShotPos = new Vector2(75, 125);
 
         // Declare a string field to store the content of the text
         private string _displayBulletsShot;
         private string _displayEnemiesShot;
+        private string _displayIntroductionText;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -47,7 +50,7 @@ namespace Monogame_Herkansing
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _playerTexture = Content.Load<Texture2D>("Rocket"); 
+            _playerTexture = Content.Load<Texture2D>("Rocket");
             _enemyTexture = Content.Load<Texture2D>("Ufo");
             _bulletTexture = Content.Load<Texture2D>("Bullet");
             _backgroundTexture = Content.Load<Texture2D>("Space-Background");
@@ -55,11 +58,11 @@ namespace Monogame_Herkansing
             Vector2 playerPosition = new Vector2(0, windowHeight / 2);
             _player = new Player(_playerTexture, playerPosition, _playerSpeed);
 
-            Vector2 enemyPosition = new Vector2(windowWidth, windowHeight / 2); 
+            Vector2 enemyPosition = new Vector2(windowWidth, windowHeight / 2);
             _enemy = new Enemy(_enemyTexture, enemyPosition, _enemySpeed, windowWidth, windowHeight);
 
             _bullet = new Bullet(_bulletTexture, playerPosition, _bulletSpeed, windowWidth);
-            _bullet.player = _player;    
+            _bullet.player = _player;
             CollisionHandler = new();
 
             base.Initialize();
@@ -74,27 +77,65 @@ namespace Monogame_Herkansing
 
         protected override void Update(GameTime gameTime)
         {
-            _displayBulletsShot = "Bullets Shot: " + _bullet.bulletsFired.ToString();
-            _displayEnemiesShot = "Enemies Shot: " + _bullet.enemiesHit.ToString();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))Exit();
-
-            _player.Update(gameTime, windowWidth, windowHeight);
-            _enemy.Update(gameTime);
-            _bullet.Update(gameTime, CollisionHandler, _enemy);
-            CollisionHandler.CollisionCheck(_bullet, _player, _enemy);
-
+            if (!isPaused)
+            {
+                _player.Update(gameTime, windowWidth, windowHeight);
+                _enemy.Update(gameTime);
+                _bullet.Update(gameTime, CollisionHandler, _enemy);
+                CollisionHandler.CollisionCheck(_bullet, _player, _enemy);
+            }
+            else
+            { 
+                UnPauseCheck();
+            }
+            DisplayText();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
             base.Update(gameTime);
         }
 
+        private void UnPauseCheck()
+        {
+            DisplayIntroduction();
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                isPaused = false;
+            }
+        }
+
+        private void DisplayIntroduction()
+        {
+            GraphicsDevice.Clear(Color.DarkSlateGray);
+            _displayIntroductionText = "Welcome, This is a basic UFO shooter game \nThe controls are as following: W A S D / ArrowKeys \nTo shoot use Spacebar and to start playing use Enter \nTo win just Shoot the enemy 10 times";
+
+        }
+
+        private void DisplayText()
+        {
+            _displayBulletsShot = "Bullets Shot: " + _bullet.bulletsFired.ToString();
+            _displayEnemiesShot = "Enemies Shot: " + _enemy.enemiesHit.ToString();
+
+        }
+        private void DrawDisplay(SpriteBatch _spriteBatch)
+        {
+            if (!isPaused)
+            {
+                _spriteBatch.Draw(_backgroundTexture, backgroundRectangle, Color.White);
+                _spriteBatch.DrawString(_font, _displayBulletsShot, _BulletsShotPos, Color.White);
+                _spriteBatch.DrawString(_font, _displayEnemiesShot, _EnemiesShotPos, Color.White);
+            }
+            else
+            {
+                _spriteBatch.DrawString(_font, _displayIntroductionText, new Vector2(windowWidth / 3, 100) , Color.White);
+            }
+        }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
             _spriteBatch.Begin();
-            _spriteBatch.Draw(_backgroundTexture, backgroundRectangle, Color.White);
-            _spriteBatch.DrawString(_font, _displayBulletsShot, _BulletsShotPos, Color.White);
-            _spriteBatch.DrawString(_font, _displayEnemiesShot, _EnemiesShotPos, Color.White);
+            DrawDisplay(_spriteBatch);
             _player.Draw(_spriteBatch);
             _enemy.Draw(_spriteBatch);
             _bullet.Draw(_spriteBatch);
