@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Monogame_Herkansing;
-using SharpDX.Direct2D1.Effects;
 using System;
 
 internal class Enemy

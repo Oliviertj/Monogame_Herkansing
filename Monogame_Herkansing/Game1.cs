@@ -91,6 +91,7 @@ namespace Monogame_Herkansing
                 UnPauseCheck();
             }
             DisplayText();
+            WinScreen();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
             base.Update(gameTime);
         }
@@ -121,6 +122,7 @@ namespace Monogame_Herkansing
             if (_enemy.enemiesHit >= 10)
             {
                 win = true;
+   
                 DisplayWinText();
             }
         }
